@@ -2,7 +2,7 @@
 FROM node:14.17.6
 
 # Set working directory for future use
-WORKDIR /onboarding-checklist-processor
+WORKDIR /onboarding-processor
 
 # Install dependencies
 COPY package*.json ./

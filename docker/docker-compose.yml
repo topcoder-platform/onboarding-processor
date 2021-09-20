@@ -1,7 +1,7 @@
 version: '3'
 services:
-  onboarding-checklist-processor:
-    image: onboarding-checklist-processor:latest
+  onboarding-processor:
+    image: onboarding-processor:latest
     build:
       context: ../
       dockerfile: docker/Dockerfile
