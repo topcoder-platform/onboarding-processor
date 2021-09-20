@@ -54,7 +54,7 @@ async function processMessage (message) {
     categoryName: constants.ONBOARDING_CHECKLIST_CATEGORY_NAME,
     traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
     traits: {
-      traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
+      // traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
       data: []
     }
   }]
