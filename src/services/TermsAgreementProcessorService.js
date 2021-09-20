@@ -63,7 +63,7 @@ async function processMessage (message) {
   const termsTraitsData = {
     status: constants.CHECKLIST_STATUS.COMPLETED,
     message: constants.CHECKLIST_MESSAGE.SUCCESS,
-    date: new Date()
+    date: new Date().getTime()
   }
 
   if (onboardingChecklistTraits.length === 0) {
