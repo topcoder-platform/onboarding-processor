@@ -24,6 +24,7 @@ The following parameters can be set in config files or in env variables:
 - `STANDARD_TERMS_ID`: The Topcoder standard terms id
 - `NDA_TERMS_ID`: The NDA terms id
 - `TERMS_USER_AGREEMENT_TOPIC`: The kafka topic on which the processor will listen to terms agreement events
+- `USER_TAXFORM_UPDATE_TOPIC`: The Kafka topic to which to listen to user tax form updated events
 - `auth0.AUTH0_URL`: Auth0 URL, used to get TC M2M token
 - `auth0.AUTH0_AUDIENCE`: Auth0 audience, used to get TC M2M token
 - `auth0.AUTH0_CLIENT_ID`: Auth0 client id, used to get TC M2M token

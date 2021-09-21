@@ -9,6 +9,7 @@ const healthcheck = require('topcoder-healthcheck-dropin')
 const logger = require('./common/logger')
 const helper = require('./common/helper')
 const TermsAgreementProcessorService = require('./services/TermsAgreementProcessorService')
+const TaxFormProcessorService = require('./services/TaxFormProcessorService')
 const Mutex = require('async-mutex').Mutex
 const events = require('events')
 
@@ -23,7 +24,8 @@ const localLogger = {
 }
 
 const topicServiceMapping = {
-  [config.topics.TERMS_USER_AGREEMENT_TOPIC]: TermsAgreementProcessorService.processMessage
+  [config.topics.TERMS_USER_AGREEMENT_TOPIC]: TermsAgreementProcessorService.processMessage,
+  [config.topics.USER_TAXFORM_UPDATE_TOPIC]: TaxFormProcessorService.processMessage
 }
 
 // Start kafka consumer
