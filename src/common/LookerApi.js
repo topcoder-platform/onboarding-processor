@@ -12,6 +12,7 @@ function LookApi(logger) {
   this.formatting = 'json';
   this.limit = 5000;
   this.logger = logger;
+  this.query_timezone = 'America/New_York';
   this.lookAuth = new LookAuth(logger);
 }
 
@@ -20,59 +21,24 @@ LookApi.prototype.runLook = function (lookId) {
   return this.callApi(endpoint);
 };
 
-LookApi.prototype.findUserByEmail = function (email) {
-  const filter = { 'user.email': email };
-  return this.runQueryWithFilter(1234, filter);
-};
+LookerApi.prototype.findRecentVerifiedMembers(duration) {
+  const view = 'member_verification';
+  const fields = ['user_id', 'verification_mode', 'status', 'matched_on', 'verification_date'];
+  const filters = { 'member_verification.verification_date': '48 hours' };
+  return this.runQueryWithFilter(view, fields, filters);
+}
 
-LookApi.prototype.findByHandle = function (handle) {
-  const filter = { 'user.handle': handle };
-  return this.runQueryWithFilter(12345, filter);
-};
-
-LookApi.prototype.findProjectRegSubmissions = function (projectId) {
-  const queryId = config.lookerConfig.QUERIES.REG_STATS;
-  const fields = ['connect_project.id', 'challenge.track', 'challenge.num_registrations', 'challenge.num_submissions'];
-  const view = 'challenge';
-  const filters = { 'connect_project.id': projectId };
-  return this.runQueryWithFilter(queryId, view, fields, filters);
-};
-
-LookApi.prototype.findProjectBudget = function (connectProjectId, permissions) {
-  const queryId = config.lookerConfig.QUERIES.BUDGET;
-  const { isManager, isAdmin, isCopilot, isCustomer } = permissions;
-
-  const fields = [
-    'project_stream.tc_connect_project_id',
-  ];
-
-  // Manager roles have access to more fields.
-  if (isManager || isAdmin) {
-    fields.push('project_stream.total_actual_challenge_fee');
-  }
-  if (isManager || isAdmin || isCopilot) {
-    fields.push('project_stream.total_actual_member_payment');
-  }
-  if (isManager || isAdmin || isCustomer) {
-    fields.push('project_stream.total_invoiced_amount', 'project_stream.remaining_invoiced_budget');
-  }
-  const view = 'project_stream';
-  const filters = { 'project_stream.tc_connect_project_id': connectProjectId };
-  return this.runQueryWithFilter(queryId, view, fields, filters);
-};
-
-LookApi.prototype.runQueryWithFilter = function (queryId, view, fields, filters) {
+LookApi.prototype.runQueryWithFilter = function (view, fields, filters) {
   const endpoint = `${this.BASE_URL}/queries/run/${this.formatting}`;
 
   const body = {
-    id: queryId,
     model: 'topcoder_model_main',
     view,
     filters,
     fields,
     // sorts: ['user.email desc 0'],
     limit: 10,
-    query_timezon: 'America/Los_Angeles',
+    query_timezone: this.query_timezone,
 
   };
   return this.callApi(endpoint, body);
