@@ -8,6 +8,7 @@ const Kafka = require('no-kafka')
 const healthcheck = require('topcoder-healthcheck-dropin')
 const logger = require('./common/logger')
 const helper = require('./common/helper')
+const LookerApi = require('./common/LookerApi')
 const TermsAgreementProcessorService = require('./services/TermsAgreementProcessorService')
 const Mutex = require('async-mutex').Mutex
 const events = require('events')
@@ -141,6 +142,13 @@ async function initConsumer () {
 
 if (!module.parent) {
   initConsumer()
+}
+
+try {
+  vat resp = await new LookerApi().findRecentVerifiedMembers();
+  console.log(resp);
+} catch(ex) {
+  console.log(ex);
 }
 
 module.exports = {
