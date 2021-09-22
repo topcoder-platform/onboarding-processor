@@ -145,7 +145,8 @@ if (!module.parent) {
 }
 
 try {
-  vat resp = await new LookerApi().findRecentVerifiedMembers();
+  var api = new LookerApi();
+  vat resp = await api.findRecentVerifiedMembers();
   console.log(resp);
 } catch(ex) {
   console.log(ex);
