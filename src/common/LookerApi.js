@@ -25,14 +25,14 @@ LookerApi.prototype.findRecentVerifiedMembers(duration) {
   const view = 'member_verification';
   const fields = ['user_id', 'verification_mode', 'status', 'matched_on', 'verification_date'];
   const filters = { 'member_verification.verification_date': '48 hours' };
-  return this.runQueryWithFilter(view, fields, filters);
+  return this.runQueryWithFilter('member_profile', view, fields, filters);
 }
 
-LookApi.prototype.runQueryWithFilter = function (view, fields, filters) {
+LookApi.prototype.runQueryWithFilter = function (model, view, fields, filters) {
   const endpoint = `${this.BASE_URL}/queries/run/${this.formatting}`;
 
   const body = {
-    model: 'topcoder_model_main',
+    model,
     view,
     filters,
     fields,
