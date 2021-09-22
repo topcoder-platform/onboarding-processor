@@ -32,5 +32,18 @@ module.exports = {
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
     TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME
-  }
+  },
+  
+  //looker config
+  "lookerConfig": {
+    "EMBED_KEY": "FAKE_KEY",
+    "LOOKER_HOST": "demo.looker.com",
+    "SESSION_LENGTH": 120,
+    "BASE_URL": "",
+    "CLIENT_ID": "",
+    "CLIENT_SECRET": "",
+    "TOKEN": "TOKEN",
+    "USE_MOCK": "true",
+    "ALLOWED_USERS": "[]"
+  },
 }
