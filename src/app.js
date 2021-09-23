@@ -144,14 +144,6 @@ if (!module.parent) {
   initConsumer()
 }
 
-try {
-  var api = new LookerApi();
-  vat resp = await api.findRecentVerifiedMembers();
-  console.log(resp);
-} catch(ex) {
-  console.log(ex);
-}
-
 module.exports = {
   initConsumer,
   eventEmitter,
