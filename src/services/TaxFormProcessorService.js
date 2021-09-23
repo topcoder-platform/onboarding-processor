@@ -16,6 +16,7 @@ async function processMessage (message) {
   logger.info(`Process message of taxForm ${message.payload.taxForm}, userId ${message.payload.userId}, handle ${message.payload.Handle}`)
   // Get the user handle from members api
   const handle = _.get(message.payload, 'Handle')
+  const taxForm = _.get(message.payload, 'taxForm')
 
   // Get the member Onboarding Checklist traits
   const onboardingChecklistTraits = await helper.getMemberTraits(handle, constants.ONBOARDING_CHECKLIST_TRAIT_ID)
@@ -27,13 +28,14 @@ async function processMessage (message) {
     date: new Date().getTime()
   }
 
+  const traitsBodyPropertyName = _.findKey(constants.TAX_FORM_TRAIT_PROPERTY_NAME_MAP, v => _.startsWith(taxForm, v)) || constants.TAX_FORM_TRAIT_PROPERTY_NAME
   if (onboardingChecklistTraits.length === 0) {
     const body = [{
       categoryName: constants.ONBOARDING_CHECKLIST_CATEGORY_NAME,
       traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
       traits: {
         data: [{
-          [constants.TAX_FORM_TRAIT_PROPERTY_NAME]: termsTraitsData
+          [traitsBodyPropertyName]: termsTraitsData
         }]
       }
     }]
@@ -43,11 +45,11 @@ async function processMessage (message) {
     // An update of the trait should be performed
 
     // Update the currently processed terms property in the request body
-    onboardingChecklistTraits[0].traits.data[0][constants.TAX_FORM_TRAIT_PROPERTY_NAME] = termsTraitsData
+    onboardingChecklistTraits[0].traits.data[0][traitsBodyPropertyName] = termsTraitsData
     await helper.saveMemberTraits(handle, onboardingChecklistTraits, false)
   }
 
-  logger.info(`Successfully Processed message of taxForm ${message.payload.taxForm}, userId ${message.payload.userId}, handle ${message.payload.Handle}`)
+  logger.info(`Successfully Processed message of taxForm ${taxForm}, userId ${message.payload.userId}, handle ${handle}`)
 }
 
 processMessage.schema = {
