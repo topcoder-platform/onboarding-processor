@@ -5,7 +5,7 @@
 // Look Auth
 
 
-import config from 'config';
+const config = require('config');
 
 const axios = require('axios');
 

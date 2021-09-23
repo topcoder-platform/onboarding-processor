@@ -2,8 +2,8 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable func-names */
 
-import config from 'config';
-import LookAuth from './LookAuth';
+const config = require('config');
+const LookAuth = require('./LookerAuth')
 
 const axios = require('axios');
 
@@ -21,10 +21,10 @@ LookApi.prototype.runLook = function (lookId) {
   return this.callApi(endpoint);
 };
 
-LookerApi.prototype.findRecentVerifiedMembers(duration) {
+LookApi.prototype.findRecentVerifiedMembers = function(duration) {
   const view = 'member_verification';
-  const fields = ['user_id', 'verification_mode', 'status', 'matched_on', 'verification_date'];
-  const filters = { 'member_verification.verification_date': '48 hours' };
+  const fields = ['member_verification.user_id', 'member_verification.verification_mode', 'member_verification.status', 'member_verification.matched_on', 'member_verification.verification_date'];
+  const filters = { 'member_verification.verification_date': 'last 3 days' };
   return this.runQueryWithFilter('member_profile', view, fields, filters);
 }
 
@@ -37,9 +37,8 @@ LookApi.prototype.runQueryWithFilter = function (model, view, fields, filters) {
     filters,
     fields,
     // sorts: ['user.email desc 0'],
-    limit: 10,
+    // limit: 100,
     query_timezone: this.query_timezone,
-
   };
   return this.callApi(endpoint, body);
 };
@@ -66,7 +65,7 @@ LookApi.prototype.callApi = function (endpoint, body) {
   }).then((res) => {
     this.logger.info(res.data);
     return res.data;
-  });
+  }).catch((err) => console.log(err));
 };
 
 module.exports = LookApi;
