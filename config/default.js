@@ -22,7 +22,9 @@ module.exports = {
 
   topics: {
     // The Kafka topic to which to listen to user terms agreement events
-    TERMS_USER_AGREEMENT_TOPIC: process.env.TERMS_USER_AGREEMENT_TOPIC || 'terms.notification.user.agreed'
+    TERMS_USER_AGREEMENT_TOPIC: process.env.TERMS_USER_AGREEMENT_TOPIC || 'terms.notification.user.agreed',
+    // The Kafka topic to which to listen to user tax form updated events
+    USER_TAXFORM_UPDATE_TOPIC: process.env.USER_TAXFORM_UPDATE_TOPIC || 'terms.notification.user.taxform.updated'
   },
 
   auth0: {

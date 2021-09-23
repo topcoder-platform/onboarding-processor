@@ -15,6 +15,10 @@ module.exports = {
   // The property name to use to store the nda terms in traits body
   NDA_TERMS_TRAIT_PROPERTY_NAME: 'nda_terms',
 
+  // The property name to use to store the tax form submitted in traits body
+  TAX_FORM_TRAIT_PROPERTY_NAME: 'tax_form_submitted',
+  TAX_FORM_TRAIT_PROPERTY_NAME_MAP: { 'w9_tax_form_submitted': 'W-9', 'w8ben_tax_form_submitted': 'W-8BEN' },
+
   CHECKLIST_STATUS: {
     COMPLETED: 'completed'
   },

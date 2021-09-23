@@ -27,6 +27,13 @@ The following verification steps expect that the member-api is properly working
 - Malformed JSON message:
 `{"topic":"terms.notification.user.invalid","originator":"onboarding-api","timestamp":"2021-09-14T00:00:00.000Z","mime-type":"application/json","payload":{"userId":251280,"termsOfUseId":"0dedac8f-5a1a-4fe7-001f-e1d04dc65b7d","legacyId":123456,"created":"2021-09-14T00:00:`
 
+## Verify tax form processor service
+
+`docker exec -it onboarding-checklist-processor_kafka /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic terms.notification.user.taxform.updated`
+
+- message for user tax form updated
+`{"topic":"terms.notification.user.taxform.updated","originator":"onboarding-api","timestamp":"2021-09-14T00:00:00.000Z","mime-type":"application/json","payload":{"userId":251280,"taxForm":"W-9(TopCoder)","Handle":"denis","created":"2021-09-14T00:00:00.000Z"}}`
+
 
 # Unit tests
 To run unit tests, execute the following command `npm run test`
