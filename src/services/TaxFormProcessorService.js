@@ -20,6 +20,15 @@ async function processMessage (message) {
 
   // Get the member Onboarding Checklist traits
   const onboardingChecklistTraits = await helper.getMemberTraits(handle, constants.ONBOARDING_CHECKLIST_TRAIT_ID)
+  
+   // construct the request body for saving the member traits
+  const body = [{
+    categoryName: constants.ONBOARDING_CHECKLIST_CATEGORY_NAME,
+    traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
+    traits: {
+      data: []
+    }
+  }]
 
   // Initialize the terms traits data object
   const termsTraitsData = {
@@ -30,23 +39,20 @@ async function processMessage (message) {
 
   const traitsBodyPropertyName = _.findKey(constants.TAX_FORM_TRAIT_PROPERTY_NAME_MAP, v => _.startsWith(taxForm, v)) || constants.TAX_FORM_TRAIT_PROPERTY_NAME
   if (onboardingChecklistTraits.length === 0) {
-    const body = [{
-      categoryName: constants.ONBOARDING_CHECKLIST_CATEGORY_NAME,
-      traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
-      traits: {
-        data: [{
-          [traitsBodyPropertyName]: termsTraitsData
-        }]
-      }
-    }]
+    body[0].traits.data.push({
+      [traitsBodyPropertyName]: termsTraitsData
+    })
     await helper.saveMemberTraits(handle, body, true)
   } else {
     // Onboarding checklist traits already exists for the member
     // An update of the trait should be performed
 
     // Update the currently processed terms property in the request body
-    onboardingChecklistTraits[0].traits.data[0][traitsBodyPropertyName] = termsTraitsData
-    await helper.saveMemberTraits(handle, onboardingChecklistTraits, false)
+    body[0].traits.data[0] = _.cloneDeep(onboardingChecklistTraits[0].traits.data[0])
+
+    // Update the currently processed terms property in the request body
+    body[0].traits.data[0][traitsBodyPropertyName] = termsTraitsData
+    await helper.saveMemberTraits(handle, body, false)
   }
 
   logger.info(`Successfully Processed message of taxForm ${taxForm}, userId ${message.payload.userId}, handle ${handle}`)
