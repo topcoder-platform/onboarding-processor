@@ -1,0 +1,11 @@
+version: '3'
+services:
+  onboarding-processor:
+    image: onboarding-processor:latest
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    env_file: 
+      - api.env
+    ports:
+      - 3001:3001
