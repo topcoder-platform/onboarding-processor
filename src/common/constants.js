@@ -19,11 +19,22 @@ module.exports = {
   TAX_FORM_TRAIT_PROPERTY_NAME: 'tax_form_submitted',
   TAX_FORM_TRAIT_PROPERTY_NAME_MAP: { 'w9_tax_form_submitted': 'W-9', 'w8ben_tax_form_submitted': 'W-8BEN' },
 
+  // The property name to use to store the user payment method in traits body
+  PAYMENT_METHOD_TRAIT_PROPERTY_NAME: 'user_payment_method',
+
   CHECKLIST_STATUS: {
     COMPLETED: 'completed'
   },
 
   CHECKLIST_MESSAGE: {
     SUCCESS: 'success'
+  },
+
+  // The mapping between the payment methods id and description
+  PAYMENT_METHODS_MAP: {
+    2: 'paypal',
+    5: 'payoneer',
+    6: 'western union',
+    7: 'wipro payroll'
   }
 }

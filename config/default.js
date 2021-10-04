@@ -34,5 +34,24 @@ module.exports = {
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
     TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME
+  },
+
+  PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION: process.env.PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION || '* * * * *',
+  MODIFIED_PAYMENT_METHODS_TIMEFRAME_DAYS: process.env.MODIFIED_PAYMENT_METHODS_TIMEFRAME_DAYS || 3,
+
+  INFORMIX: {
+    server: process.env.INFORMIX_SERVER || 'informixoltp_tcp', // informix server
+    database: process.env.INFORMIX_DATABASE || 'informixoltp', // informix database
+    host: process.env.INFORMIX_HOST || 'localhost', // host
+    protocol: process.env.INFORMIX_PROTOCOL || 'onsoctcp',
+    port: process.env.INFORMIX_PORT || '2021', // port
+    db_locale: process.env.INFORMIX_DB_LOCALE || 'en_US.57372',
+    user: process.env.INFORMIX_USER || 'informix', // user
+    password: process.env.INFORMIX_PASSWORD || '1nf0rm1x', // password
+    maxsize: parseInt(process.env.MAXSIZE) || 0,
+    minpool: parseInt(process.env.MINPOOL, 10) || 1,
+    maxpool: parseInt(process.env.MAXPOOL, 10) || 60,
+    idleTimeout: parseInt(process.env.IDLETIMEOUT, 10) || 3600,
+    timeout: parseInt(process.env.TIMEOUT, 10) || 30000
   }
 }

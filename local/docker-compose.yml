@@ -14,3 +14,16 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_CREATE_TOPICS: "terms.notification.user.agreed:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  tc-informix:
+    image: "appiriodevops/tc-database-scripts:latest"
+    hostname: informix.cloud.topcoder.com
+    container_name: iif_innovator_c
+    environment:
+      LICENSE: accept
+    ports:
+      - "2021:2021"
+      - "2022:2022"
+      - "27017:27017"
+      - "27018:27018"
+      - "27883:27883"
+    tty: true

@@ -4,6 +4,7 @@
 
 - Nodejs(v14+)
 - Kafka
+- [Informix](https://www.ibm.com/products/informix)
 
 ## Configuration
 
@@ -31,8 +32,11 @@ The following parameters can be set in config files or in env variables:
 - `auth0.AUTH0_CLIENT_SECRET`: Auth0 client secret, used to get TC M2M token
 - `auth0.AUTH0_PROXY_SERVER_URL`: Proxy Auth0 URL, used to get TC M2M token
 - `auth0.TOKEN_CACHE_TIME`: Auth0 token cache time, used to get TC M2M token
+- `PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION`: The cron expression for the user payment methods processor, default value is `* * * * *` (every minutes, used for development only)
+- `MODIFIED_PAYMENT_METHODS_TIMEFRAME_DAYS`: The timeframe expressed in days for which to get the updated user payment methods from informix database, default value is 3 which means that when the job runs it will get the user payment methods records modified in the last 3 days
+- INFORMIX: This configuration object contains the configuration parameters for Informix database connection, the confguration parameters defined in this object are self-explanatory, for more details refer to `config/default.js`
 
-## Local Kafka setup
+## Local Dependencies setup
 
 1. Navigate to the directory `local`
 
@@ -41,6 +45,7 @@ The following parameters can be set in config files or in env variables:
     ```bash
     docker-compose up -d
     ```
+This will setup both Kafka and Informix database with Topcoder databases all set
 
 ## Local deployment
 
@@ -70,7 +75,7 @@ The following parameters can be set in config files or in env variables:
 
 3. Local config
 
-   In the `onboarding-checklist-processor` root directory create `.env` file with the next environment variables. Values for **Auth0 config** should be shared with you on the forum.<br>
+   In the `onboarding-processor` root directory create `.env` file with the next environment variables. Values for **Auth0 config** should be shared with you on the forum.<br>
 
       ```bash
       # Auth0 config

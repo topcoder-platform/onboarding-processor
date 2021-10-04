@@ -10,8 +10,10 @@ const logger = require('./common/logger')
 const helper = require('./common/helper')
 const TermsAgreementProcessorService = require('./services/TermsAgreementProcessorService')
 const TaxFormProcessorService = require('./services/TaxFormProcessorService')
+const PaymentMethodsProcessorService = require('./services/PaymentMethodsProcessorService')
 const Mutex = require('async-mutex').Mutex
 const events = require('events')
+const cron = require('node-cron')
 
 const eventEmitter = new events.EventEmitter()
 
@@ -143,6 +145,8 @@ async function initConsumer () {
 
 if (!module.parent) {
   initConsumer()
+  // schedule the payment methods processing job
+  cron.schedule(config.get('PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION'), () => PaymentMethodsProcessorService.processPaymentMethods())
 }
 
 module.exports = {
