@@ -10,6 +10,7 @@ const prepare = require('mocha-prepare')
 const helper = require('../../src/common/helper')
 
 const { nonExistingUserId, denisUserId, upbeatUserId, upbeatExistingTraits } = require('../common/testData')
+const { argoliteUserId, argoliteExistingTraits } = require('../common/paymentMethodsTestData')
 
 prepare(async function (done) {
   // get access token
@@ -25,12 +26,16 @@ prepare(async function (done) {
     .reply(200, [{ 'handle': 'denis' }])
     .get(uri => uri.includes(`?userId=${upbeatUserId}`))
     .reply(200, [{ 'handle': 'upbeat' }])
+    .get(uri => uri.includes(`?userId=${argoliteUserId}`))
+    .reply(200, [{ 'handle': 'argolite' }])
     .get(uri => uri.includes(`?userId=${nonExistingUserId}`))
     .reply(200, [])
     .get(uri => uri.includes('/members/denis/traits?traitIds=onboarding_checklist'))
     .reply(200, [])
     .get(uri => uri.includes('/members/upbeat/traits?traitIds=onboarding_checklist'))
     .reply(200, upbeatExistingTraits)
+    .get(uri => uri.includes('/members/argolite/traits?traitIds=onboarding_checklist'))
+    .reply(200, argoliteExistingTraits)
     .post(uri => uri.includes('/traits'))
     .reply(200)
     .put(uri => uri.includes('/traits'))

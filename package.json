@@ -20,6 +20,7 @@
     "nodemon": "^2.0.7",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
+    "sinon": "^11.1.2",
     "standard": "^12.0.1",
     "stringcase": "^4.3.1",
     "superagent": "^5.3.1"
@@ -31,10 +32,13 @@
     "config": "^3.1.0",
     "dotenv": "^10.0.0",
     "get-parameter-names": "^0.3.0",
+    "informix-wrapper": "git+https://github.com/appirio-tech/informix-wrapper.git#less-logs",
     "lodash": "^4.17.20",
     "no-kafka": "^3.4.3",
+    "node-cron": "^3.0.0",
     "tc-core-library-js": "^2.4.1",
     "topcoder-healthcheck-dropin": "^1.0.3",
+    "underscore": "^1.13.1",
     "winston": "^3.2.1"
   },
   "engines": {

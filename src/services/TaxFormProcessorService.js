@@ -20,8 +20,8 @@ async function processMessage (message) {
 
   // Get the member Onboarding Checklist traits
   const onboardingChecklistTraits = await helper.getMemberTraits(handle, constants.ONBOARDING_CHECKLIST_TRAIT_ID)
-  
-   // construct the request body for saving the member traits
+
+  // construct the request body for saving the member traits
   const body = [{
     categoryName: constants.ONBOARDING_CHECKLIST_CATEGORY_NAME,
     traitId: constants.ONBOARDING_CHECKLIST_TRAIT_ID,
