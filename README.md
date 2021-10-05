@@ -5,6 +5,7 @@
 - Nodejs(v14+)
 - Kafka
 - [Informix](https://www.ibm.com/products/informix)
+- Java 1.8
 
 ## Configuration
 
