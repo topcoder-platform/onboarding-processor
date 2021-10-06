@@ -36,5 +36,8 @@ module.exports = {
     5: 'payoneer',
     6: 'western union',
     7: 'wipro payroll'
-  }
+  },
+
+  // The property name to use to store the id verification in traits body
+  ID_VERIFICATION_PROPERTY_NAME: 'id_verification'
 }
