@@ -27,6 +27,10 @@ The following parameters can be set in config files or in env variables:
 - `NDA_TERMS_ID`: The NDA terms id
 - `TERMS_USER_AGREEMENT_TOPIC`: The kafka topic on which the processor will listen to terms agreement events
 - `USER_TAXFORM_UPDATE_TOPIC`: The Kafka topic to which to listen to user tax form updated events
+- `UPDATE_MEMBER_PROFILE_TOPIC`: Topic for receiving member profile update events
+- `CREATE_MEMBER_PROFILE_TRAIT_TOPIC`: Topic for receiving member profile trait creation events
+- `UPDATE_MEMBER_PROFILE_TRAIT_TOPIC`: Topic for receiving member profile trait update events
+- `DELETE_MEMBER_PROFILE_TRAIT_TOPIC`: Topic for receiving member profile trait removal events
 - `auth0.AUTH0_URL`: Auth0 URL, used to get TC M2M token
 - `auth0.AUTH0_AUDIENCE`: Auth0 audience, used to get TC M2M token
 - `auth0.AUTH0_CLIENT_ID`: Auth0 client id, used to get TC M2M token

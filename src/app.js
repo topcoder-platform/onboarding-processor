@@ -11,6 +11,7 @@ const helper = require('./common/helper')
 const TermsAgreementProcessorService = require('./services/TermsAgreementProcessorService')
 const TaxFormProcessorService = require('./services/TaxFormProcessorService')
 const PaymentMethodsProcessorService = require('./services/PaymentMethodsProcessorService')
+const ProfileCompletionProcessorService = require('./services/ProfileCompletionProcessorService')
 const Mutex = require('async-mutex').Mutex
 const events = require('events')
 const cron = require('node-cron')
@@ -27,7 +28,11 @@ const localLogger = {
 
 const topicServiceMapping = {
   [config.topics.TERMS_USER_AGREEMENT_TOPIC]: TermsAgreementProcessorService.processMessage,
-  [config.topics.USER_TAXFORM_UPDATE_TOPIC]: TaxFormProcessorService.processMessage
+  [config.topics.USER_TAXFORM_UPDATE_TOPIC]: TaxFormProcessorService.processMessage,
+  [config.topics.UPDATE_MEMBER_PROFILE_TOPIC]: ProfileCompletionProcessorService.processProfileUpdateMessage,
+  [config.topics.CREATE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processCreateOrUpdateProfileTraitMessage,
+  [config.topics.UPDATE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processCreateOrUpdateProfileTraitMessage,
+  [config.topics.DELETE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processProfileTraitRemovalMessage
 }
 
 // Start kafka consumer

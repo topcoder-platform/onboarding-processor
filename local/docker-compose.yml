@@ -12,7 +12,7 @@ services:
       - "9092:9092"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_CREATE_TOPICS: "terms.notification.user.agreed:1:1"
+      KAFKA_CREATE_TOPICS: "terms.notification.user.agreed:1:1,member.action.profile.update:1:1,member.action.profile.trait.create:1:1,member.action.profile.trait.update:1:1,member.action.profile.trait.delete:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
   tc-informix:
     image: "appiriodevops/tc-database-scripts:latest"
