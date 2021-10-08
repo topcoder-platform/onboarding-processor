@@ -14,6 +14,10 @@ const { ID_VERIFICATION_PROPERTY_NAME } = require('../common/constants')
  * This is the main function of the processor which handles saving the id verification as member traits
  */
 async function processIdVerification () {
+  if (config.PAUSE_ID_VERIFICATION && _.toLower(config.PAUSE_ID_VERIFICATION) === 'true') {
+    logger.info('The id verification is currently paused')
+    return
+  }
   logger.info({
     component: 'IdVerificationProcessorService',
     context: 'processIdVerification',
