@@ -11,6 +11,7 @@ const helper = require('../../src/common/helper')
 
 const { nonExistingUserId, denisUserId, upbeatUserId, upbeatExistingTraits } = require('../common/testData')
 const { argoliteUserId, argoliteExistingTraits } = require('../common/paymentMethodsTestData')
+const { idVerificationUserId, idVerificationExistingTraits } = require('../common/IdVerificationTestData')
 
 prepare(async function (done) {
   // get access token
@@ -28,6 +29,8 @@ prepare(async function (done) {
     .reply(200, [{ 'handle': 'upbeat' }])
     .get(uri => uri.includes(`?userId=${argoliteUserId}`))
     .reply(200, [{ 'handle': 'argolite' }])
+    .get(uri => uri.includes(`?userId=${idVerificationUserId}`))
+    .reply(200, [{ 'handle': 'idVerification' }])
     .get(uri => uri.includes(`?userId=${nonExistingUserId}`))
     .reply(200, [])
     .get(uri => uri.includes('/members/denis/traits?traitIds=onboarding_checklist'))
@@ -36,6 +39,8 @@ prepare(async function (done) {
     .reply(200, upbeatExistingTraits)
     .get(uri => uri.includes('/members/argolite/traits?traitIds=onboarding_checklist'))
     .reply(200, argoliteExistingTraits)
+    .get(uri => uri.includes('/members/idVerification/traits?traitIds=onboarding_checklist'))
+    .reply(200, idVerificationExistingTraits)
     .post(uri => uri.includes('/traits'))
     .reply(200)
     .put(uri => uri.includes('/traits'))
