@@ -32,7 +32,7 @@ async function processIdVerification () {
     logger.info({
       component: 'IdVerificationProcessorService',
       context: 'processIdVerification',
-      message: 'Successfully Processed id verification'
+      message: `Successfully queued id verification for ${idVerifications.length} verifications fetched from looker`
     })
   } catch (e) {
     logger.error({
