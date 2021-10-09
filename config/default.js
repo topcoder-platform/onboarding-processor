@@ -24,7 +24,15 @@ module.exports = {
     // The Kafka topic to which to listen to user terms agreement events
     TERMS_USER_AGREEMENT_TOPIC: process.env.TERMS_USER_AGREEMENT_TOPIC || 'terms.notification.user.agreed',
     // The Kafka topic to which to listen to user tax form updated events
-    USER_TAXFORM_UPDATE_TOPIC: process.env.USER_TAXFORM_UPDATE_TOPIC || 'terms.notification.user.taxform.updated'
+    USER_TAXFORM_UPDATE_TOPIC: process.env.USER_TAXFORM_UPDATE_TOPIC || 'terms.notification.user.taxform.updated',
+    // Topic for receiving member profile update events
+    UPDATE_MEMBER_PROFILE_TOPIC: process.env.UPDATE_MEMBER_PROFILE_TOPIC || 'member.action.profile.update',
+    // Topic for receiving member profile trait creation events
+    CREATE_MEMBER_PROFILE_TRAIT_TOPIC: process.env.CREATE_MEMBER_PROFILE_TRAIT_TOPIC || 'member.action.profile.trait.create',
+    // Topic for receiving member profile trait update events
+    UPDATE_MEMBER_PROFILE_TRAIT_TOPIC: process.env.UPDATE_MEMBER_PROFILE_TRAIT_TOPIC || 'member.action.profile.trait.update',
+    // Topic for receiving member profile trait removal events
+    DELETE_MEMBER_PROFILE_TRAIT_TOPIC: process.env.DELETE_MEMBER_PROFILE_TRAIT_TOPIC || 'member.action.profile.trait.delete'
   },
 
   auth0: {
@@ -36,7 +44,7 @@ module.exports = {
     TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME
   },
 
-  PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION: process.env.PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION || '* * * * *',
+  PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION: process.env.PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION || '*/10 * * * *',
   MODIFIED_PAYMENT_METHODS_TIMEFRAME_DAYS: process.env.MODIFIED_PAYMENT_METHODS_TIMEFRAME_DAYS || 3,
 
   INFORMIX: {

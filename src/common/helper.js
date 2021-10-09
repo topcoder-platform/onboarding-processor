@@ -148,11 +148,25 @@ const executeQueryAsync = (database, sql, params) => new Promise((resolve, rejec
   })
 })
 
+/**
+ * This function checks if the user identified by the specified handle has entered skills
+ *
+ * @param {String} handle the user handle for whom to check if the skills are entered
+ * @returns true if the user has entered skills, false otherwise
+ *
+ */
+async function hasUserEnteredSkills (handle) {
+  logger.debug({ component: 'helper', context: 'hasUserEnteredSkills', message: `handle: ${handle}` })
+  const { body: result } = await request.get(`${config.MEMBER_API_URL}/${handle}/skills`)
+  return !_.isUndefined(result) && !_.isEmpty(result.skills)
+}
+
 module.exports = {
   getKafkaOptions,
   getM2MToken,
   getHandleByUserId,
   getMemberTraits,
   saveMemberTraits,
-  executeQueryAsync
+  executeQueryAsync,
+  hasUserEnteredSkills
 }
