@@ -14,7 +14,7 @@ const service = require('../../src/services/ProfileCompletionProcessorService')
 const {
   testMethods, tonyJUserId, thomasUserId, saarixxUserId
 } = require('../common/profileCompletionTestData')
-const { nonExistingUserId, denisUserId, upbeatUserId } = require('../common/testData')
+const { nonExistingUserId, upbeatUserId } = require('../common/testData')
 
 describe('Topcoder Onboarding Checklist - Profile Completion Processor Service Unit Tests', () => {
   let infoLogs = []
@@ -187,35 +187,13 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     })
   }
 
-  it('test processProfileUpdateMessage with photoURL and description successfully - onboarding checklist does not already exist', async () => {
-    const message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
-    _.set(message, 'payload.userId', denisUserId)
-    await service.processProfileUpdateMessage(message)
-
-    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":true,"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":true,"bio":true}}`)
-  })
-
-  it('test processProfileUpdateMessage without photoURL and description successfully - onboarding checklist does not already exist', async () => {
-    let message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
-    _.set(message, 'payload.userId', denisUserId)
-
-    delete message.payload.photoURL
-    delete message.payload.description
-
-    await service.processProfileUpdateMessage(message)
-
-    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false,"bio":false}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false,"bio":false}}`)
-  })
-
   it('test processProfileUpdateMessage successfully - onboarding checklist already exists without profile completion traits', async () => {
     const message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
     _.set(message, 'payload.userId', upbeatUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'upbeat', updatedMetadata: {"profile_picture":true,"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'upbeat', updatedMetadata: {"profile_picture":true,"bio":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'upbeat', updatedMetadata: {"bio":true}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'upbeat', updatedMetadata: {"bio":true}}`)
   })
 
   it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits', async () => {
@@ -223,8 +201,8 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     _.set(message, 'payload.userId', tonyJUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'tonyj', updatedMetadata: {"profile_picture":true,"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'tonyj', updatedMetadata: {"profile_picture":true,"bio":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'tonyj', updatedMetadata: {"bio":true}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'tonyj', updatedMetadata: {"bio":true}}`)
   })
 
   it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits - skills not set', async () => {
@@ -232,8 +210,8 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     _.set(message, 'payload.userId', thomasUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'thomaskranitsas', updatedMetadata: {"profile_picture":true,"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'thomaskranitsas', updatedMetadata: {"profile_picture":true,"bio":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'thomaskranitsas', updatedMetadata: {"bio":true}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'thomaskranitsas', updatedMetadata: {"bio":true}}`)
   })
 
   it('test processProfileUpdateMessage successfully - nothing to update', async () => {
@@ -303,5 +281,44 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     await service.processProfileTraitRemovalMessage(message)
 
     assertAppLogInfoMessage(`Profile trait removal message for traitIds: otherTrait Skipped`)
+  })
+
+  it('test processProfilePictureUploadMessage with photoURL set', async () => {
+    const message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
+
+    await service.processProfilePictureUploadMessage(message)
+
+    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":true}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":true}}`)
+  })
+
+  it('test processProfilePictureUploadMessage with empty photoURL', async () => {
+    const message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
+    _.set(message, 'payload.photoURL', '')
+
+    await service.processProfilePictureUploadMessage(message)
+
+    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false}}`)
+  })
+
+  it('test processProfilePictureUploadMessage with undefined photoURL', async () => {
+    let message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
+    delete message.payload.photoURL
+
+    await service.processProfilePictureUploadMessage(message)
+
+    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false}}`)
+  })
+
+  it('test processProfilePictureUploadMessage with null photoURL', async () => {
+    let message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
+    _.set(message, 'payload.photoURL', null)
+
+    await service.processProfilePictureUploadMessage(message)
+
+    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false}}`)
   })
 })

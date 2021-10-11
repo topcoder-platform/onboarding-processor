@@ -41,7 +41,7 @@ const denisSkills = {
 const testMethods = {
   processProfileUpdateMessage: {
     requiredFields,
-    stringFields: ['payload.photoURL', 'payload.description', ...stringFields],
+    stringFields,
     positiveIntegerFields: ['payload.userId'],
     dateFields: ['timestamp'],
     testMessage: {
@@ -147,6 +147,24 @@ const testMethods = {
         ],
         'updatedAt': '2021-10-06T11:26:58.223Z',
         'updatedBy': 'LEyCiuOrHc7UAFoY0EAAhMulWSX7SrQ5@clients'
+      }
+    }
+  },
+  processProfilePictureUploadMessage: {
+    requiredFields,
+    stringFields,
+    positiveIntegerFields: ['payload.userId'],
+    dateFields: ['timestamp'],
+    testMessage: {
+      'topic': 'member.action.profile.photo.update',
+      'originator': 'topcoder-member-api',
+      'timestamp': '2021-10-06T11:26:58.223Z',
+      'mime-type': 'application/json',
+      'payload': {
+        'userId': denisUserId,
+        'photoURL': 'https://xxx.amazonaws.com/member/profile/abacd.png',
+        'updatedAt': '2021-10-11T04:53:22.048Z',
+        'updatedBy': '123'
       }
     }
   }
