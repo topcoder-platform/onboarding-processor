@@ -174,8 +174,7 @@ const tonyJExistingTraits = [
               'work': false,
               'bio': false,
               'profile_picture': false,
-              'language': false,
-              'title': false
+              'language': false
             },
             'message': 'Profile is incomplete',
             'status': 'pending_at_user'
@@ -212,8 +211,7 @@ const thomasExistingTraits = [
               'work': false,
               'bio': false,
               'profile_picture': false,
-              'language': false,
-              'title': false
+              'language': false
             },
             'message': 'Profile is incomplete',
             'status': 'pending_at_user'
@@ -250,8 +248,7 @@ const saarixxExistingTraits = [
               'work': true,
               'bio': true,
               'profile_picture': true,
-              'language': false,
-              'title': false
+              'language': false
             },
             'message': 'Profile is incomplete',
             'status': 'pending_at_user'

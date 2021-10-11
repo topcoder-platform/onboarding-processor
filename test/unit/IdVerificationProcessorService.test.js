@@ -10,7 +10,7 @@ const logger = require('../../src/common/logger')
 const service = require('../../src/services/IdVerificationProcessorService')
 const LookerApi = require('../../src/common/LookerApi')
 const sandbox = require('sinon').createSandbox()
-const { memberVerification, existingIdVerification, nonExistingUserIdVerification } = require('../common/IdVerificationTestData')
+const { memberVerification, existingIdVerification, nonExistingUserIdVerification } = require('../common/idVerificationTestData')
 
 describe('Topcoder Onboarding Checklist - Id Verification Processor Service Unit Tests', () => {
   let infoLogs = []

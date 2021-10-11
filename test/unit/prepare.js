@@ -11,7 +11,7 @@ const helper = require('../../src/common/helper')
 
 const { nonExistingUserId, denisUserId, upbeatUserId, upbeatExistingTraits } = require('../common/testData')
 const { argoliteUserId, argoliteExistingTraits } = require('../common/paymentMethodsTestData')
-const { idVerificationUserId, idVerificationExistingTraits } = require('../common/IdVerificationTestData')
+const { idVerificationUserId, idVerificationExistingTraits } = require('../common/idVerificationTestData')
 const { denisSkills, tonyJUserId, tonyJExistingTraits, thomasUserId, thomasExistingTraits, saarixxUserId, saarixxExistingTraits } = require('../common/profileCompletionTestData')
 
 prepare(async function (done) {
