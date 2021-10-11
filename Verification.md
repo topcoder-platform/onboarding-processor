@@ -112,6 +112,8 @@ Start the producer for profile update topic:
 
 The processor output should be like: https://monosnap.com/direct/2VsT5LHGhZwmb99s1fvibBz1TvK0wV
 
+-- Post the update profile message - Remove country (userId = 305384, handle = mess):
+`{"topic":"member.action.profile.update","originator":"topcoder-member-api","timestamp":"2021-10-06T13:59:38.278Z","mime-type":"application/json","payload":{"lastName":"last name","addresses":[{"zip":"560110","streetAddr1":"GM INFINITE ECITY TOWN","city":"Bangalore","stateCode":"Karnataka","type":"HOME"}],"updatedBy":"LEyCiuOrHc7UAFoY0EAAhMulWSX7SrQ5@clients","description":"What goes around comes around","homeCountryCode":"IRL","handle":"denis","otherLangName":"en","userId":305384,"handleLower":"denis","emailVerifyTokenDate":"2021-10-06T14:59:38.262Z","tracks":["DESIGN","DEVELOP"],"firstName":"Atif Ali","photoURL":"https://topcoder-dev-media.s3.amazonaws.com/member/profile/upbeat-1575621848253.png","createdAt":"2020-02-06T07:38:50.088Z","createdBy":"test1","newEmailVerifyToken":"8c3c2f17-ef72-4c3d-894d-e6eefc68075d","emailVerifyToken":"359aaf3b-55e3-4336-b6b0-522d0a81d24c","maxRating":{"rating":1000,"track":"dev","subTrack":"code"},"newEmail":"atif.siddiqui2@topcoder.com","newEmailVerifyTokenDate":"2021-10-06T14:59:38.262Z","email":"denis@topcoder.com","status":"ACTIVE","updatedAt":"2021-10-06T13:59:38.262Z"}}`
 
 Start the producer for profile picture upload:
 `docker exec -it onboarding-checklist-processor_kafka /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic member.action.profile.photo.update`

@@ -5,6 +5,7 @@
 process.env.NODE_ENV = 'test'
 
 require('../../src/bootstrap')
+const config = require('config')
 const _ = require('lodash')
 const should = require('should')
 const constants = require('../../src/common/constants')
@@ -192,17 +193,19 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     _.set(message, 'payload.userId', upbeatUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'upbeat', updatedMetadata: {"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'upbeat', updatedMetadata: {"bio":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'upbeat', updatedMetadata: {"bio":true,"country":true}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'upbeat', updatedMetadata: {"bio":true,"country":true}}`)
   })
 
-  it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits', async () => {
+  it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits - country not set', async () => {
     const message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
     _.set(message, 'payload.userId', tonyJUserId)
+    _.set(message, config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME, '')
+
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'tonyj', updatedMetadata: {"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'tonyj', updatedMetadata: {"bio":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'tonyj', updatedMetadata: {"bio":true,"country":false}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'tonyj', updatedMetadata: {"bio":true,"country":false}}`)
   })
 
   it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits - skills not set', async () => {
@@ -210,16 +213,14 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     _.set(message, 'payload.userId', thomasUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'thomaskranitsas', updatedMetadata: {"bio":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'thomaskranitsas', updatedMetadata: {"bio":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'thomaskranitsas', updatedMetadata: {"bio":true,"country":true}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'thomaskranitsas', updatedMetadata: {"bio":true,"country":true}}`)
   })
 
   it('test processProfileUpdateMessage successfully - nothing to update', async () => {
     let message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
     _.set(message, 'payload.userId', tonyJUserId)
-
-    delete message.payload.photoURL
-    delete message.payload.description
+    message = _.omit(message, ['payload.description', config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME])
 
     await service.processProfileUpdateMessage(message)
 
