@@ -177,16 +177,10 @@ async function getNewChecklist (oldChecklist, updatedMetadataItems, handle) {
       // Set the new status and message
       newStatus = CHECKLIST_STATUS.COMPLETED
       newMessage = CHECKLIST_MESSAGE.SUCCESS
-
-      // Set the title checklist item to true, since all other items are set
-      updatedMetadata.title = true
     } else {
       // Set the new status and message
       newStatus = CHECKLIST_STATUS.PENDING_AT_USER
       newMessage = CHECKLIST_MESSAGE.PROFILE_IS_INCOMPLETE
-
-      // set the title checklist item to false, since there are still pending items not set
-      updatedMetadata.title = false
     }
 
     // return the new checklist with the 'updated' flag set to true
@@ -217,7 +211,6 @@ async function getInitialChecklist (metadata, handle) {
     metadata: _.assign({}, {
       profile_picture: false,
       bio: false,
-      title: false,
       skills: await helper.hasUserEnteredSkills(handle),
       education: false,
       work: false,
