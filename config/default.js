@@ -33,7 +33,7 @@ module.exports = {
     UPDATE_MEMBER_PROFILE_TRAIT_TOPIC: process.env.UPDATE_MEMBER_PROFILE_TRAIT_TOPIC || 'member.action.profile.trait.update',
     // Topic for receiving member profile trait removal events
     DELETE_MEMBER_PROFILE_TRAIT_TOPIC: process.env.DELETE_MEMBER_PROFILE_TRAIT_TOPIC || 'member.action.profile.trait.delete',
-    // Topic for receiving update profile pciture events
+    // Topic for receiving update profile picture events
     UPDATE_PROFILE_PICTURE_TOPIC: process.env.UPDATE_PROFILE_PICTURE_TOPIC || 'member.action.profile.photo.update'
   },
 

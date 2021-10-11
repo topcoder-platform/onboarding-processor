@@ -31,6 +31,7 @@ The following parameters can be set in config files or in env variables:
 - `CREATE_MEMBER_PROFILE_TRAIT_TOPIC`: Topic for receiving member profile trait creation events
 - `UPDATE_MEMBER_PROFILE_TRAIT_TOPIC`: Topic for receiving member profile trait update events
 - `DELETE_MEMBER_PROFILE_TRAIT_TOPIC`: Topic for receiving member profile trait removal events
+- `UPDATE_PROFILE_PICTURE_TOPIC`: Topic for receiving update profile picture events
 - `auth0.AUTH0_URL`: Auth0 URL, used to get TC M2M token
 - `auth0.AUTH0_AUDIENCE`: Auth0 audience, used to get TC M2M token
 - `auth0.AUTH0_CLIENT_ID`: Auth0 client id, used to get TC M2M token
