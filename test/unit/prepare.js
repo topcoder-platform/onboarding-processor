@@ -11,6 +11,7 @@ const helper = require('../../src/common/helper')
 
 const { nonExistingUserId, denisUserId, upbeatUserId, upbeatExistingTraits } = require('../common/testData')
 const { argoliteUserId, argoliteExistingTraits } = require('../common/paymentMethodsTestData')
+const { idVerificationUserId, idVerificationExistingTraits } = require('../common/IdVerificationTestData')
 const { denisSkills, tonyJUserId, tonyJExistingTraits, thomasUserId, thomasExistingTraits, saarixxUserId, saarixxExistingTraits } = require('../common/profileCompletionTestData')
 
 prepare(async function (done) {
@@ -29,6 +30,8 @@ prepare(async function (done) {
     .reply(200, [{ 'handle': 'upbeat' }])
     .get(uri => uri.includes(`?userId=${argoliteUserId}`))
     .reply(200, [{ 'handle': 'argolite' }])
+    .get(uri => uri.includes(`?userId=${idVerificationUserId}`))
+    .reply(200, [{ 'handle': 'idVerification' }])
     .get(uri => uri.includes(`?userId=${tonyJUserId}`))
     .reply(200, [{ 'handle': 'tonyj' }])
     .get(uri => uri.includes(`?userId=${thomasUserId}`))
@@ -51,6 +54,8 @@ prepare(async function (done) {
     .reply(200, upbeatExistingTraits)
     .get(uri => uri.includes('/members/argolite/traits?traitIds=onboarding_checklist'))
     .reply(200, argoliteExistingTraits)
+    .get(uri => uri.includes('/members/idVerification/traits?traitIds=onboarding_checklist'))
+    .reply(200, idVerificationExistingTraits)
     .get(uri => uri.includes('/members/tonyj/traits?traitIds=onboarding_checklist'))
     .reply(200, tonyJExistingTraits)
     .get(uri => uri.includes('/members/thomaskranitsas/traits?traitIds=onboarding_checklist'))

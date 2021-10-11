@@ -40,6 +40,10 @@ The following parameters can be set in config files or in env variables:
 - `PAYMENT_METHODS_PROCESSOR_CRON_EXPRESSION`: The cron expression for the user payment methods processor, default value is `* * * * *` (every minutes, used for development only)
 - `MODIFIED_PAYMENT_METHODS_TIMEFRAME_DAYS`: The timeframe expressed in days for which to get the updated user payment methods from informix database, default value is 3 which means that when the job runs it will get the user payment methods records modified in the last 3 days
 - INFORMIX: This configuration object contains the configuration parameters for Informix database connection, the confguration parameters defined in this object are self-explanatory, for more details refer to `config/default.js`
+- `ID_VERIFICATION_PROCESSOR_CRON_EXPRESSION`: The cron expression for the id verification processor, default value is `* * * * *` (every minutes, used for development only)
+- `PAUSE_ID_VERIFICATION`: If this value is true then while the job is running, check if it is true, if so just log the log message The id verification is currently paused
+- `FETCH_LOOKER_VERIFIED_MEMBER_TIMEFRAME_DAYS`: The timeframe expressed in days for which to fetch looker api, default value is 3 which means that when the job runs it will get the id verification records in the last 3 days
+- lookerConfig: This configuration object contains the configuration parameters for looker api, for more details refer to `config/default.js`
 
 ## Local Dependencies setup
 

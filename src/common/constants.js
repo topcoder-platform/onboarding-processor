@@ -43,6 +43,8 @@ module.exports = {
     7: 'wipro payroll'
   },
 
+  // The property name to use to store the id verification in traits body
+  ID_VERIFICATION_PROPERTY_NAME: 'id_verification',
   // The mapping between the profile completion metadata field name and the traits id
   // The keys are the trait ids, the values are the corresponding field in the metadata object
   TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP: {

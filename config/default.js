@@ -61,5 +61,16 @@ module.exports = {
     maxpool: parseInt(process.env.MAXPOOL, 10) || 60,
     idleTimeout: parseInt(process.env.IDLETIMEOUT, 10) || 3600,
     timeout: parseInt(process.env.TIMEOUT, 10) || 30000
+  },
+
+  ID_VERIFICATION_PROCESSOR_CRON_EXPRESSION: process.env.ID_VERIFICATION_PROCESSOR_CRON_EXPRESSION || '* * * * *',
+  PAUSE_ID_VERIFICATION: process.env.PAUSE_ID_VERIFICATION || false,
+  FETCH_LOOKER_VERIFIED_MEMBER_TIMEFRAME_DAYS: process.env.FETCH_LOOKER_VERIFIED_MEMBER_TIMEFRAME_DAYS || '4',
+  // looker-api config
+  lookerConfig: {
+    BASE_URL: process.env.LOOKER_API_BASE_URL || '', // looker api base url
+    CLIENT_ID: process.env.LOOKER_API_CLIENT_ID || '', // looker api client id
+    CLIENT_SECRET: process.env.LOOKER_API_CLIENT_SECRET || '', // looker api client secret
+    TOKEN: process.env.LOOKER_API_TOKEN || 'TOKEN' // looker api token
   }
 }

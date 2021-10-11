@@ -89,6 +89,16 @@ update user_payment_method set payment_method_id = 1 where user_id = 7340263;
 - The output of the next execution should be like: https://monosnap.com/direct/SHwsrW7ZvPOJ7jS9zFfiZTeKLTYIA9
 - Subsequent executions will show the following: https://monosnap.com/direct/8OQt6J083ieBDOton9FrnMpv54o2Au
 
+## Id verification processor verification
+
+### before starting app
+
+- Add `LOOKER_API_BASE_URL=https://looker-api.free.beeceptor.com` to `.env` file. It's a online mockServer to mock the looker api
+
+### after starting app and IdVerificationProcessor executed
+
+- The output of the processor should show logs like: https://monosnap.com/file/7u9FRtSbbh6HlYMVC13feDk4gbWJe6
+
 
 # Profile Completion Processor verification:
 

@@ -71,6 +71,7 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/id-verification
                 - feature/profile-completeness
 
       # Production builds are exectuted only on tagged commits to the
