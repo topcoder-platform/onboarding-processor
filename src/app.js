@@ -33,7 +33,8 @@ const topicServiceMapping = {
   [config.topics.UPDATE_MEMBER_PROFILE_TOPIC]: ProfileCompletionProcessorService.processProfileUpdateMessage,
   [config.topics.CREATE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processCreateOrUpdateProfileTraitMessage,
   [config.topics.UPDATE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processCreateOrUpdateProfileTraitMessage,
-  [config.topics.DELETE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processProfileTraitRemovalMessage
+  [config.topics.DELETE_MEMBER_PROFILE_TRAIT_TOPIC]: ProfileCompletionProcessorService.processProfileTraitRemovalMessage,
+  [config.topics.UPDATE_PROFILE_PICTURE_TOPIC]: ProfileCompletionProcessorService.processProfilePictureUploadMessage
 }
 
 // Start kafka consumer

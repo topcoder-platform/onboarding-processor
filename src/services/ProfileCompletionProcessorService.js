@@ -25,8 +25,7 @@ const component = 'ProfileCompletionProcessorService'
 async function processProfileUpdateMessage (message) {
   // The eventually updated metadata items by the current event message
   const updatedMetadataItems = {
-    profile_picture: !_.isUndefined(_.get(message, 'payload.photoURL')),
-    bio: !_.isUndefined(_.get(message, 'payload.description'))
+    bio: !_.isEmpty(_.get(message, 'payload.description'))
   }
 
   await handleUpdatedProfileCompletionMetadata(message, updatedMetadataItems)
@@ -42,8 +41,7 @@ processProfileUpdateMessage.schema = {
       payload: Joi.object()
         .keys({
           userId: Joi.positiveId().required(),
-          photoURL: Joi.string(),
-          description: Joi.string()
+          description: Joi.string().allow(null, '')
         }).unknown(true)
         .required()
     }).required()
@@ -297,10 +295,41 @@ async function handleUpdatedProfileCompletionMetadata (message, updatedMetadataI
   })
 }
 
+/**
+ * This function handles the message received when a user uploads his profile picture
+ *
+ * @param {Object} message The message to handle
+ */
+async function processProfilePictureUploadMessage (message) {
+  // The eventually updated metadata items by the current event message
+  const updatedMetadataItems = {
+    profile_picture: !_.isEmpty(_.get(message, 'payload.photoURL'))
+  }
+
+  await handleUpdatedProfileCompletionMetadata(message, updatedMetadataItems)
+}
+
+processProfilePictureUploadMessage.schema = {
+  message: Joi.object()
+    .keys({
+      topic: Joi.string().required(),
+      originator: Joi.string().required(),
+      timestamp: Joi.date().required(),
+      'mime-type': Joi.string().required(),
+      payload: Joi.object()
+        .keys({
+          userId: Joi.positiveId().required(),
+          photoURL: Joi.string().allow(null, '')
+        }).unknown(true)
+        .required()
+    }).required()
+}
+
 module.exports = {
   processProfileUpdateMessage,
   processCreateOrUpdateProfileTraitMessage,
-  processProfileTraitRemovalMessage
+  processProfileTraitRemovalMessage,
+  processProfilePictureUploadMessage
 }
 
 logger.buildService(module.exports, 'ProfileCompletionProcessorService')
