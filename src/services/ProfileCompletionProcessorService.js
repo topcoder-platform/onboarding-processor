@@ -8,6 +8,7 @@ const logger = require('../common/logger')
 const helper = require('../common/helper')
 const constants = require('../common/constants')
 const { PROFILE_COMPLETION_TRAIT_PROPERTY_NAME, CHECKLIST_MESSAGE, CHECKLIST_STATUS, TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP } = require('../common/constants')
+const config = require('config')
 
 /**
  * This array contains the list of profile completion metadata object keys that affect the status update
@@ -25,7 +26,8 @@ const component = 'ProfileCompletionProcessorService'
 async function processProfileUpdateMessage (message) {
   // The eventually updated metadata items by the current event message
   const updatedMetadataItems = {
-    bio: !_.isEmpty(_.get(message, 'payload.description'))
+    bio: !_.isEmpty(_.get(message, 'payload.description')),
+    country: !_.isEmpty(_.get(message, config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME))
   }
 
   await handleUpdatedProfileCompletionMetadata(message, updatedMetadataItems)
@@ -41,7 +43,9 @@ processProfileUpdateMessage.schema = {
       payload: Joi.object()
         .keys({
           userId: Joi.positiveId().required(),
-          description: Joi.string().allow(null, '')
+          description: Joi.string().allow(null, ''),
+          competitionCountryCode: Joi.string().allow(null, ''),
+          homeCountryCode: Joi.string().allow(null, '')
         }).unknown(true)
         .required()
     }).required()
@@ -212,7 +216,8 @@ async function getInitialChecklist (metadata, handle) {
       skills: await helper.hasUserEnteredSkills(handle),
       education: false,
       work: false,
-      language: false
+      language: false,
+      country: false
     }, metadata)
   }
 }

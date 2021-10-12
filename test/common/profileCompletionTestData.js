@@ -192,7 +192,8 @@ const tonyJExistingTraits = [
               'work': false,
               'bio': false,
               'profile_picture': false,
-              'language': false
+              'language': false,
+              'country': false
             },
             'message': 'Profile is incomplete',
             'status': 'pending_at_user'
