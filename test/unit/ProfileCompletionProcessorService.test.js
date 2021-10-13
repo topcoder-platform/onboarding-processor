@@ -193,19 +193,19 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     _.set(message, 'payload.userId', upbeatUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'upbeat', updatedMetadata: {"bio":true,"country":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'upbeat', updatedMetadata: {"bio":true,"country":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'upbeat', updatedMetadata: {"profile_picture":true,"bio":true,"skills":false,"country":true,"education":false,"work":false,"language":false}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'upbeat', updatedMetadata: {"profile_picture":true,"bio":true,"skills":false,"country":true,"education":false,"work":false,"language":false}}`)
   })
 
   it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits - country not set', async () => {
     const message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
     _.set(message, 'payload.userId', tonyJUserId)
-    _.set(message, config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME, '')
+    _.set(message, `payload.${config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME}`, '')
 
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'tonyj', updatedMetadata: {"bio":true,"country":false}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'tonyj', updatedMetadata: {"bio":true,"country":false}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'tonyj', updatedMetadata: {"profile_picture":false,"bio":true,"skills":false,"country":false,"education":false,"work":false,"language":false}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'tonyj', updatedMetadata: {"profile_picture":false,"bio":true,"skills":false,"country":false,"education":false,"work":false,"language":false}}`)
   })
 
   it('test processProfileUpdateMessage successfully - onboarding checklist already exists with profile completion traits - skills not set', async () => {
@@ -213,14 +213,14 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
     _.set(message, 'payload.userId', thomasUserId)
     await service.processProfileUpdateMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'thomaskranitsas', updatedMetadata: {"bio":true,"country":true}}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'thomaskranitsas', updatedMetadata: {"bio":true,"country":true}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'thomaskranitsas', updatedMetadata: {"profile_picture":true,"bio":true,"skills":false,"country":true,"education":false,"work":false,"language":false}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'thomaskranitsas', updatedMetadata: {"profile_picture":true,"bio":true,"skills":false,"country":true,"education":false,"work":false,"language":false}}`)
   })
 
   it('test processProfileUpdateMessage successfully - nothing to update', async () => {
     let message = _.cloneDeep(testMethods['processProfileUpdateMessage'].testMessage)
     _.set(message, 'payload.userId', tonyJUserId)
-    message = _.omit(message, ['payload.description', config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME])
+    message = _.omit(message, ['payload.description', 'payload.photoURL', `payload.${config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME}`])
 
     await service.processProfileUpdateMessage(message)
 
@@ -242,29 +242,8 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
 
     await service.processCreateOrUpdateProfileTraitMessage(message)
 
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'saarixx', updatedMetadata: {"${TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP['languages']}":true}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'saarixx', updatedMetadata: {"profile_picture":true,"bio":true,"skills":true,"country":true,"education":true,"work":true,"language":true}}`)
   })
-
-  for (const traitId of ['education', 'work', 'languages']) {
-    it(`test processCreateOrUpdateProfileTraitMessage with ${traitId} - onboarding checklist does not already exist`, async () => {
-      const message = _.cloneDeep(testMethods['processCreateOrUpdateProfileTraitMessage'].testMessage)
-      _.set(message, 'payload.traitId', traitId)
-      await service.processCreateOrUpdateProfileTraitMessage(message)
-
-      assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"${TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP[traitId]}":true}}`)
-      assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"${TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP[traitId]}":true}}`)
-    })
-
-    it(`test processCreateOrUpdateProfileTraitMessage with ${traitId} - empty data`, async () => {
-      const message = _.cloneDeep(testMethods['processCreateOrUpdateProfileTraitMessage'].testMessage)
-      _.set(message, 'payload.traitId', traitId)
-      _.set(message, 'payload.traits.data', [])
-      await service.processCreateOrUpdateProfileTraitMessage(message)
-
-      assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"${TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP[traitId]}":false}}`)
-      assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"${TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP[traitId]}":false}}`)
-    })
-  }
 
   it(`test processProfileTraitRemovalMessage - remove onboaring checklist trait `, async () => {
     const message = _.cloneDeep(testMethods['processProfileTraitRemovalMessage'].testMessage)
@@ -289,37 +268,7 @@ describe('Topcoder Onboarding Checklist - Profile Completion Processor Service U
 
     await service.processProfilePictureUploadMessage(message)
 
-    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":true}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":true}}`)
-  })
-
-  it('test processProfilePictureUploadMessage with empty photoURL', async () => {
-    const message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
-    _.set(message, 'payload.photoURL', '')
-
-    await service.processProfilePictureUploadMessage(message)
-
-    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false}}`)
-  })
-
-  it('test processProfilePictureUploadMessage with undefined photoURL', async () => {
-    let message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
-    delete message.payload.photoURL
-
-    await service.processProfilePictureUploadMessage(message)
-
-    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false}}`)
-  })
-
-  it('test processProfilePictureUploadMessage with null photoURL', async () => {
-    let message = _.cloneDeep(testMethods['processProfilePictureUploadMessage'].testMessage)
-    _.set(message, 'payload.photoURL', null)
-
-    await service.processProfilePictureUploadMessage(message)
-
-    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":false}`)
-    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":false}}`)
+    assertDebugMessage(`Process profile completion trait: { user: 'denis', updatedMetadata: {"profile_picture":true,"bio":true,"skills":true,"country":true,"education":false,"work":false,"language":false}}`)
+    assertDebugMessage(`Successfully processed profile completion trait { user: 'denis', updatedMetadata: {"profile_picture":true,"bio":true,"skills":true,"country":true,"education":false,"work":false,"language":false}}`)
   })
 })
