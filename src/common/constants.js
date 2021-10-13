@@ -19,11 +19,37 @@ module.exports = {
   TAX_FORM_TRAIT_PROPERTY_NAME: 'tax_form_submitted',
   TAX_FORM_TRAIT_PROPERTY_NAME_MAP: { 'w9_tax_form_submitted': 'W-9', 'w8ben_tax_form_submitted': 'W-8BEN' },
 
+  // The property name to use to store the user payment method in traits body
+  PAYMENT_METHOD_TRAIT_PROPERTY_NAME: 'user_payment_method',
+
+  // The property name to use to store the profile completion trait in traits body
+  PROFILE_COMPLETION_TRAIT_PROPERTY_NAME: 'profile_completed',
+
   CHECKLIST_STATUS: {
-    COMPLETED: 'completed'
+    COMPLETED: 'completed',
+    PENDING_AT_USER: 'pending_at_user'
   },
 
   CHECKLIST_MESSAGE: {
-    SUCCESS: 'success'
+    SUCCESS: 'success',
+    PROFILE_IS_INCOMPLETE: 'Profile is incomplete'
+  },
+
+  // The mapping between the payment methods id and description
+  PAYMENT_METHODS_MAP: {
+    2: 'paypal',
+    5: 'payoneer',
+    6: 'western union',
+    7: 'wipro payroll'
+  },
+
+  // The property name to use to store the id verification in traits body
+  ID_VERIFICATION_PROPERTY_NAME: 'id_verification',
+  // The mapping between the profile completion metadata field name and the traits id
+  // The keys are the trait ids, the values are the corresponding field in the metadata object
+  TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP: {
+    education: 'education',
+    work: 'work',
+    languages: 'language'
   }
 }

@@ -7,6 +7,8 @@ const request = require('superagent')
 const logger = require('./logger')
 const _ = require('lodash')
 const m2mAuth = require('tc-core-library-js').auth.m2m
+const Wrapper = require('informix-wrapper')
+const informixSettings = config.INFORMIX
 
 let m2m
 
@@ -98,10 +100,73 @@ async function saveMemberTraits (handle, body, isCreate) {
     .set('Authorization', `Bearer ${token}`)
 }
 
+/**
+ * Create informix connection
+ * @param database the database.
+ * @param reject the reject function.
+ */
+const createConnection = (database, reject) => {
+  logger.debug(`Creating Informix Connection ${JSON.stringify(database)}`)
+  const jdbc = new Wrapper(_.extend(informixSettings, { database }), e => logger.debug)
+  jdbc.on('error', (err) => {
+    jdbc.disconnect()
+    reject(err)
+  })
+  return jdbc.initialize()
+}
+
+/**
+ * Execute query in informix database.
+ * @param database the database.
+ * @param sql the sql.
+ * @param params the sql params.
+ */
+const executeQueryAsync = (database, sql, params) => new Promise((resolve, reject) => {
+  logger.debug(`Execute Query ${JSON.stringify(sql)} params: ${JSON.stringify(params)}`)
+  const connection = createConnection(database, reject)
+  connection.connect((error) => {
+    if (error) {
+      connection.disconnect()
+      reject(error)
+    } else {
+      connection.query(sql, (err, result) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      }, {
+        start: function (q) {
+          logger.debug(`Start to execute: '${q}'`)
+        },
+        finish: (f) => {
+          connection.disconnect()
+          logger.debug(`Query execution result: ${f}`)
+        }
+      }).execute(params)
+    }
+  })
+})
+
+/**
+ * This function checks if the user identified by the specified handle has entered skills
+ *
+ * @param {String} handle the user handle for whom to check if the skills are entered
+ * @returns true if the user has entered skills, false otherwise
+ *
+ */
+async function hasUserEnteredSkills (handle) {
+  logger.debug({ component: 'helper', context: 'hasUserEnteredSkills', message: `handle: ${handle}` })
+  const { body: result } = await request.get(`${config.MEMBER_API_URL}/${handle}/skills`)
+  return !_.isUndefined(result) && !_.isEmpty(result.skills)
+}
+
 module.exports = {
   getKafkaOptions,
   getM2MToken,
   getHandleByUserId,
   getMemberTraits,
-  saveMemberTraits
+  saveMemberTraits,
+  executeQueryAsync,
+  hasUserEnteredSkills
 }

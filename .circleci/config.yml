@@ -11,7 +11,7 @@ install_dependency: &install_dependency
 install_deploysuite: &install_deploysuite
   name: Installation of install_deploysuite.
   command: |
-    git clone --branch v1.4.2 https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
+    git clone --branch master_hostfix_v1 https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
     cp ./../buildscript/master_deploy.sh .
     cp ./../buildscript/buildenv.sh .
     cp ./../buildscript/awsconfiguration.sh .
@@ -71,6 +71,8 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/id-verification
+                - feature/profile-completeness
 
       # Production builds are exectuted only on tagged commits to the
       # master branch.
