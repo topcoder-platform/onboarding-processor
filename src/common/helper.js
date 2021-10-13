@@ -66,7 +66,11 @@ async function getHandleByUserId (userId) {
 async function getMemberByHandle (handle) {
   logger.debug({ component: 'helper', context: 'getMemberByHandle', message: `handle: ${handle}` })
 
-  const { body: user } = await request.get(`${config.MEMBER_API_URL}/${handle}`)
+  const token = await getM2MToken()
+
+  const { body: user } = await request
+    .get(`${config.MEMBER_API_URL}/${handle}`)
+    .set('Authorization', `Bearer ${token}`)
 
   return user
 }
