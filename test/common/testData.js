@@ -61,9 +61,9 @@ const stringFields = ['topic', 'originator', 'mime-type']
 
 const guidFields = ['payload.termsOfUseId']
 
-const positiveIntegerFields = ['payload.userId', 'payload.legacyId']
+const positiveIntegerFields = ['payload.userId']
 
-const dateFields = ['timestamp', 'payload.created']
+const dateFields = ['timestamp']
 
 const nonExistingUserId = 111111
 

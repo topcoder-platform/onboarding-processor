@@ -102,10 +102,8 @@ processMessage.schema = {
       payload: Joi.object()
         .keys({
           userId: Joi.positiveId().required(),
-          termsOfUseId: Joi.string().uuid().required(),
-          legacyId: Joi.positiveId(),
-          created: Joi.date()
-        })
+          termsOfUseId: Joi.string().uuid().required()
+        }).unknown(true)
         .required()
     })
     .required()
