@@ -279,8 +279,98 @@ const saarixxExistingTraits = [
     'updatedAt': 1631785852398,
     'createdBy': 'XKMy68LCDT7mwKaUtl17Pgf5u2A7dXYo@clients',
     'updatedBy': 'XKMy68LCDT7mwKaUtl17Pgf5u2A7dXYo@clients'
+  },
+  {
+    'userId': saarixxUserId,
+    'traitId': 'education',
+    'traits': {
+      'traitId': 'education',
+      'data': [
+        {
+          'University': 'Kyiv Polytechnic'
+        }
+      ]
+    }
+  },
+  {
+    'userId': saarixxUserId,
+    'traitId': 'work',
+    'traits': {
+      'traitId': 'work',
+      'data': [
+        {
+          'Topcoder': 'Software Designer'
+        }
+      ]
+    }
   }
 ]
+
+const memberDetails = {
+  'userId': 40154303,
+  'handle': 'upbeat',
+  'handleLower': 'upbeat',
+  'firstName': 'Atif Ali',
+  'lastName': 'Siddiqui 12345',
+  'tracks': [
+    'DESIGN',
+    'DEVELOP'
+  ],
+  'status': 'ACTIVE',
+  'addresses': [
+    {
+      'zip': '560110',
+      'streetAddr1': 'GM INFINITE ECITY TOWN',
+      'city': 'Bangalore',
+      'stateCode': 'Karnataka',
+      'type': 'HOME'
+    }
+  ],
+  'description': 'What goes around comes around',
+  'email': 'er.atif@gmail.com',
+  'homeCountryCode': 'IRL',
+  'competitionCountryCode': 'IRL',
+  'photoURL': 'https://topcoder-dev-media.s3.amazonaws.com/member/profile/upbeat-1575621848253.png',
+  'maxRating': {
+    'rating': 0,
+    'track': 'DATA_SCIENCE',
+    'subTrack': [
+      'SRM'
+    ],
+    'ratingColor': '#9D9FA0'
+  },
+  'createdAt': 1515982240000,
+  'createdBy': '40154303',
+  'updatedAt': 1629632394246,
+  'updatedBy': '40029484'
+}
+
+const saarixxSkills = {
+  'userId': 123,
+  'handle': 'skills',
+  'handleLower': 'postmane2e-denis',
+  'skills': {
+    '286': {
+      'hidden': false,
+      'score': 1888,
+      'sources': [
+        'source1',
+        'source2'
+      ],
+      'tagName': 'Java'
+    },
+    '311': {
+      'hidden': false,
+      'tagName': 'Python',
+      'sources': [
+        'USER_ENTERED'
+      ],
+      'score': 90
+    }
+  },
+  'createdAt': 1621895619502,
+  'updatedAt': 1621895619502
+}
 
 module.exports = {
   testMethods,
@@ -290,5 +380,7 @@ module.exports = {
   thomasUserId,
   thomasExistingTraits,
   saarixxExistingTraits,
-  saarixxUserId
+  saarixxUserId,
+  memberDetails,
+  saarixxSkills
 }

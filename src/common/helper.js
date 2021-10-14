@@ -57,6 +57,25 @@ async function getHandleByUserId (userId) {
 }
 
 /**
+ * This function retrieves the details of the user identified by the given handle
+ *
+ * @param {String} handle The handle of the user for whom to get the details
+ * @returns The details of the user
+ *
+ */
+async function getMemberByHandle (handle) {
+  logger.debug({ component: 'helper', context: 'getMemberByHandle', message: `handle: ${handle}` })
+
+  const token = await getM2MToken()
+
+  const { body: user } = await request
+    .get(`${config.MEMBER_API_URL}/${handle}`)
+    .set('Authorization', `Bearer ${token}`)
+
+  return user
+}
+
+/**
  * Gets the member traits for the given trait id and member handle
  *
  * @param {String} handle The member handle for whome to get the traits
@@ -168,5 +187,6 @@ module.exports = {
   getMemberTraits,
   saveMemberTraits,
   executeQueryAsync,
-  hasUserEnteredSkills
+  hasUserEnteredSkills,
+  getMemberByHandle
 }
