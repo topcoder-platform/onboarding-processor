@@ -92,7 +92,7 @@ async function saveIdVerificationTrait (idVerification) {
   const traitsData = {
     status: constants.CHECKLIST_STATUS.COMPLETED,
     message: constants.CHECKLIST_MESSAGE.SUCCESS,
-    date: idVerification.verification_date,
+    date: new Date(idVerification.verification_date).getTime(),
     metadata: {
       matched_on: idVerification.matched_on,
       verification_mode: idVerification.verification_mode
