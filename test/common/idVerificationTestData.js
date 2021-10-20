@@ -66,7 +66,7 @@ const idVerificationExistingTraits = [
       'data': [
         {
           'id_verification': {
-            'date': '2021-07-21',
+            'date': new Date('2021-07-21').getTime(),
             'message': 'success',
             'status': 'completed',
             'metadata': {

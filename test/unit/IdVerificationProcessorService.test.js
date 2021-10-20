@@ -88,7 +88,6 @@ describe('Topcoder Onboarding Checklist - Id Verification Processor Service Unit
     await service.processIdVerification()
 
     assertInfoMessage('Processing id verification')
-    assertInfoMessage('Successfully Processed id verification')
     for (const handle of ['denis', 'upbeat']) {
       assertDebugMessage(`Saving id verification member trait for user '${handle}'`)
       assertDebugMessage(`Successfully completed saving id verification member trait for user '${handle}'`)
@@ -103,7 +102,6 @@ describe('Topcoder Onboarding Checklist - Id Verification Processor Service Unit
     await service.processIdVerification()
 
     assertInfoMessage('Processing id verification')
-    assertInfoMessage('Successfully Processed id verification')
     should.equal(stub.callCount, 1)
     assertDebugMessage(`Id verification trait is already set for user 'idVerification', Skipping...!`)
   })
