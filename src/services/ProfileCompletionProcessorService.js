@@ -13,7 +13,7 @@ const config = require('config')
 /**
  * This array contains the list of profile completion metadata object keys that affect the status update
  */
-const METADATA_KEYS_FOR_STATUS_UPDATE = ['profile_picture', 'bio', 'skills', 'education', 'work', 'language']
+const METADATA_KEYS_FOR_STATUS_UPDATE = ['profile_picture', 'bio', 'skills', 'education', 'work', 'language', 'country']
 
 // The component name to be used when logging messages
 const component = 'ProfileCompletionProcessorService'
@@ -27,7 +27,7 @@ async function processProfileUpdateMessage (message) {
   // The eventually updated metadata items by the current event message
   const updatedMetadataItems = {
     bio: !_.isEmpty(_.get(message, 'payload.description')),
-    country: !_.isEmpty(_.get(message, config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME))
+    country: !_.isEmpty(_.get(message, `payload.${config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME}`))
   }
 
   await handleUpdatedProfileCompletionMetadata(message, updatedMetadataItems)
@@ -147,22 +147,11 @@ processProfileTraitRemovalMessage.schema = {
  *
  * @param {Object} oldChecklist The old checklist object
  * @param {Object} updatedMetadataItems The updated metadata objects
- * @param {String} handle The user handle
  * @returns The new checklist
  */
-async function getNewChecklist (oldChecklist, updatedMetadataItems, handle) {
+async function getNewChecklist (oldChecklist, updatedMetadataItems) {
   // Initialize the aggregated updatedMetadata object
-  let updatedMetadata
-  if (!_.get(oldChecklist, 'metadata.skills')) {
-    // The skills trait was not previously set, we need to re-check from member-api if it is done and update the metadata accordingly
-    updatedMetadata = _.assign({},
-      oldChecklist.metadata,
-      updatedMetadataItems,
-      { skills: await helper.hasUserEnteredSkills(handle) })
-  } else {
-    // The skills trait was previously set, no need to make the call to member-api for checking again
-    updatedMetadata = _.assign({}, oldChecklist.metadata, updatedMetadataItems)
-  }
+  const updatedMetadata = _.assign({}, oldChecklist.metadata, updatedMetadataItems)
 
   if (_.isEqual(oldChecklist.metadata, updatedMetadata)) {
     // Nothing has changed in the metadata, return the result with 'updated' flag set to false
@@ -202,23 +191,14 @@ async function getNewChecklist (oldChecklist, updatedMetadataItems, handle) {
  * This function generates the initial structure of the profile completion checklist
  *
  * @param {Object} metadata The metadata to put in the checklist
- * @param {String} handle the user handle
  * @returns The initial checklist structure with the the given metadata
  */
-async function getInitialChecklist (metadata, handle) {
+async function getInitialChecklist (metadata) {
   return {
     status: CHECKLIST_STATUS.PENDING_AT_USER,
     message: CHECKLIST_MESSAGE.PROFILE_IS_INCOMPLETE,
     date: new Date().getTime(),
-    metadata: _.assign({}, {
-      profile_picture: false,
-      bio: false,
-      skills: await helper.hasUserEnteredSkills(handle),
-      education: false,
-      work: false,
-      language: false,
-      country: false
-    }, metadata)
+    metadata: _.assign({}, metadata)
   }
 }
 
@@ -232,13 +212,16 @@ async function handleUpdatedProfileCompletionMetadata (message, updatedMetadataI
   // Get the user handle from members api
   const handle = await helper.getHandleByUserId(_.get(message, 'payload.userId'))
 
+  // Check for other updates in user profile and profile traits
+  const fullyUpdatedMetadata = await getFullyUpdatedMetadata(handle, updatedMetadataItems)
+
   // context used for logging
   const context = 'handleUpdatedProfileCompletionMetadata'
 
   logger.debug({
     component,
     context,
-    message: `Process profile completion trait: { user: '${handle}', updatedMetadata: ${JSON.stringify(updatedMetadataItems)}}`
+    message: `Process profile completion trait: { user: '${handle}', updatedMetadata: ${JSON.stringify(fullyUpdatedMetadata)}}`
   })
 
   // Get the member Onboarding Checklist traits
@@ -258,7 +241,7 @@ async function handleUpdatedProfileCompletionMetadata (message, updatedMetadataI
     isCreate = true
     // The member does not have any onboarding checklist trait, we initialize it
     body[0].traits.data.push({
-      [PROFILE_COMPLETION_TRAIT_PROPERTY_NAME]: await getInitialChecklist(updatedMetadataItems, handle)
+      [PROFILE_COMPLETION_TRAIT_PROPERTY_NAME]: await getInitialChecklist(fullyUpdatedMetadata)
     })
   } else {
     isCreate = false
@@ -271,11 +254,11 @@ async function handleUpdatedProfileCompletionMetadata (message, updatedMetadataI
     if (_.isUndefined(body[0].traits.data[0][PROFILE_COMPLETION_TRAIT_PROPERTY_NAME])) {
       // There were no traits data for profile completion checklist
       // We initialize a new one with the updated metadata by the current event message
-      body[0].traits.data[0][PROFILE_COMPLETION_TRAIT_PROPERTY_NAME] = await getInitialChecklist(updatedMetadataItems, handle)
+      body[0].traits.data[0][PROFILE_COMPLETION_TRAIT_PROPERTY_NAME] = await getInitialChecklist(fullyUpdatedMetadata)
     } else {
       // traits data for profile completion checklist is already there for the user
       // We update it based on old checklist data and updated metadata by the current event message
-      const newChecklist = await getNewChecklist(body[0].traits.data[0][PROFILE_COMPLETION_TRAIT_PROPERTY_NAME], updatedMetadataItems, handle)
+      const newChecklist = await getNewChecklist(body[0].traits.data[0][PROFILE_COMPLETION_TRAIT_PROPERTY_NAME], fullyUpdatedMetadata)
 
       if (!newChecklist.isUpdated) {
         // The checklist was not updated, there is no need to call member-api
@@ -296,7 +279,7 @@ async function handleUpdatedProfileCompletionMetadata (message, updatedMetadataI
   logger.debug({
     component,
     context,
-    message: `Successfully processed profile completion trait { user: '${handle}', updatedMetadata: ${JSON.stringify(updatedMetadataItems)}}`
+    message: `Successfully processed profile completion trait { user: '${handle}', updatedMetadata: ${JSON.stringify(fullyUpdatedMetadata)}}`
   })
 }
 
@@ -328,6 +311,31 @@ processProfilePictureUploadMessage.schema = {
         }).unknown(true)
         .required()
     }).required()
+}
+
+/**
+ * This function retrieves the fully updated metadata items for the member.
+ * It gets the traits from the member traits API and returns the fully updated metadata with the updated flags
+ *
+ * @param {String} handle The member handle
+ * @param {Object} updatedMetadataItems The updated metadata generated as a result of the event
+ */
+async function getFullyUpdatedMetadata (handle, updatedMetadataItems) {
+  const member = await helper.getMemberByHandle(handle)
+  const existingTraits = await helper.getMemberTraits(handle, _.join(_.keys(TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP), ','))
+  const updateTraitsMetadata = {}
+
+  for (const key of _.keys(TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP)) {
+    const trait = _.find(existingTraits, { traitId: key })
+    updateTraitsMetadata[TRAITS_TO_PROFILE_COMPLETION_CHECKLIST_METADATA_MAP[key]] = _.get(trait, 'traits.data', []).length > 0
+  }
+
+  return _.assign({}, {
+    profile_picture: !_.isEmpty(_.get(member, 'photoURL')),
+    bio: !_.isEmpty(_.get(member, 'description')),
+    skills: await helper.hasUserEnteredSkills(handle),
+    country: !_.isEmpty(_.get(member, config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME))
+  }, updateTraitsMetadata, updatedMetadataItems)
 }
 
 module.exports = {
