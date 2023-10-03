@@ -25,9 +25,15 @@ const component = 'ProfileCompletionProcessorService'
  */
 async function processProfileUpdateMessage (message) {
   // The eventually updated metadata items by the current event message
+  const bio = _.get(message, 'payload.description')
+  const country = _.get(message, `payload.${config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME}`)
+  if (_.isUndefined(bio) && _.isUndefined(country)) {
+    logger.info(`Fields are not updated. Ignoring ...!`)
+    return
+  }
   const updatedMetadataItems = {
-    bio: !_.isEmpty(_.get(message, 'payload.description')),
-    country: !_.isEmpty(_.get(message, `payload.${config.PROFILE_UPDATE_EVENT_COUNTRY_FIELD_NAME}`))
+    bio: !_.isEmpty(bio),
+    country: !_.isEmpty(country)
   }
 
   await handleUpdatedProfileCompletionMetadata(message, updatedMetadataItems)
