@@ -1,5 +1,5 @@
 # Use the base image with Node.js 14.17.6
-FROM node:14.17.6
+FROM node:14.19.1
 
 # Setup Java to be used by informix-wrapper
 RUN sed -i '/stretch-updates/d' /etc/apt/sources.list
