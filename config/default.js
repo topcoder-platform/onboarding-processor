@@ -69,8 +69,6 @@ module.exports = {
   },
 
   ID_VERIFICATION_PROCESSOR_CRON_EXPRESSION: process.env.ID_VERIFICATION_PROCESSOR_CRON_EXPRESSION || '0 */12 * * *',
-  PAUSE_ID_VERIFICATION: process.env.PAUSE_ID_VERIFICATION || false,
-  FETCH_LOOKER_VERIFIED_MEMBER_TIMEFRAME_DAYS: process.env.FETCH_LOOKER_VERIFIED_MEMBER_TIMEFRAME_DAYS || '3',
   // looker-api config
   lookerConfig: {
     BASE_URL: process.env.LOOKER_API_BASE_URL || '', // looker api base url
