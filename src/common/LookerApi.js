@@ -21,18 +21,6 @@ function LookApi (logger) {
 }
 
 /**
- * Find recent verified members
- * @param {String} duration the verification date duration to filter
- * @returns an array of verified members
- */
-LookApi.prototype.findRecentVerifiedMembers = function (duration) {
-  const view = 'member_verification'
-  const fields = ['member_verification.user_id', 'member_verification.verification_mode', 'member_verification.status', 'member_verification.matched_on', 'member_verification.verification_date']
-  const filters = { 'member_verification.verification_date': duration }
-  return this.runQueryWithFilter('member_profile', view, fields, filters)
-}
-
-/**
  * Run query with filter
  * @param {String} model the model name
  * @param {String} view the view name
